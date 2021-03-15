@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.suslovalex.exchangerate.R
+import ru.suslovalex.exchangerate.data.DataCurrency
 
-class CurrencyAdapter: ListAdapter<Currency, CurrencyViewHolder>(CurrencyDiffUtil()) {
+class CurrencyAdapter: ListAdapter<DataCurrency, CurrencyViewHolder>(CurrencyDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_currency, parent, false)
         return CurrencyViewHolder(view)
@@ -26,19 +27,19 @@ class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val code: TextView = itemView.findViewById(R.id.char_code)
     private val exchangeValue: TextView = itemView.findViewById(R.id.value)
 
-    fun bind(currency: Currency){
-        name.text = currency.name
-        code.text = currency.code
-        exchangeValue.text = currency.value.toString()
+    fun bind(dataCurrency: DataCurrency){
+        name.text = dataCurrency.name
+        code.text = dataCurrency.charCode
+        exchangeValue.text = dataCurrency.value.toString()
     }
 }
 
-class CurrencyDiffUtil: DiffUtil.ItemCallback<Currency>() {
-    override fun areItemsTheSame(oldItem: Currency, newItem: Currency): Boolean {
-        return oldItem.id == newItem.id
+class CurrencyDiffUtil: DiffUtil.ItemCallback<DataCurrency>() {
+    override fun areItemsTheSame(oldItem: DataCurrency, newItem: DataCurrency): Boolean {
+        return oldItem.iD == newItem.iD
     }
 
-    override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean {
+    override fun areContentsTheSame(oldItem: DataCurrency, newItem: DataCurrency): Boolean {
         return oldItem == newItem
     }
 
