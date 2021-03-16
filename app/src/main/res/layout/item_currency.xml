@@ -5,11 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="14dp"
-    app:strokeColor="@color/black"
-    app:strokeWidth="1dp">
+    android:layout_height="90dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="20dp"
+    app:strokeColor="@color/green"
+    app:strokeWidth="1dp"
+    app:elevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,42 +20,78 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/char_code"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Фунт стерлингов Соединенного королевства" />
+
+        <ImageView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:src="@drawable/ic_money"
+            app:layout_constraintEnd_toStartOf="@+id/char_code"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            android:layout_marginTop="20dp"/>
 
         <TextView
             android:id="@+id/char_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
-            android:textSize="@dimen/textCharCode"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/equal"
+            app:layout_constraintStart_toEndOf="@+id/money"
+            app:layout_constraintBottom_toBottomOf="@id/money"
+            android:layout_marginBottom="8dp"
+            tools:text="1 USD" />
+
+
+        <ImageView
+            android:id="@+id/equal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_equal"
+            app:layout_constraintBottom_toBottomOf="@+id/char_code"
             app:layout_constraintEnd_toStartOf="@+id/value"
-            app:layout_constraintStart_toEndOf="@+id/name"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="USD" />
-
-
+            app:layout_constraintStart_toEndOf="@+id/char_code"
+            app:layout_constraintTop_toTopOf="@id/char_code" />
 
         <TextView
             android:id="@+id/value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:textSize="@dimen/textValue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/char_code"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/char_code"
+            app:layout_constraintEnd_toStartOf="@+id/ruble"
+            app:layout_constraintStart_toEndOf="@+id/equal"
+            app:layout_constraintTop_toTopOf="@id/char_code"
             tools:text="100" />
+
+        <ImageView
+            android:id="@+id/ruble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="100dp"
+            android:src="@drawable/ic_ruble"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/value"
+            app:layout_constraintBottom_toBottomOf="@id/value"
+            android:layout_marginBottom="2dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
