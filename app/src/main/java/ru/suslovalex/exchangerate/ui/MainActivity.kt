@@ -9,6 +9,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().add(R.id.container_layout, MainFragment()).commit()
+        if (savedInstanceState == null){
+            initFragment()
+        }
+    }
+
+    private fun initFragment() {
+        supportFragmentManager.beginTransaction().replace(R.id.container_layout, CurrencyListFragment()).commit()
     }
 }
