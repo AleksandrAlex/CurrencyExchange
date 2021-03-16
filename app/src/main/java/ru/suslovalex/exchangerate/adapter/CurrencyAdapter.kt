@@ -28,8 +28,9 @@ class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val exchangeValue: TextView = itemView.findViewById(R.id.value)
 
     fun bind(dataCurrency: DataCurrency){
+        val codeValue = "${dataCurrency.nominal} ${dataCurrency.charCode}"
         name.text = dataCurrency.name
-        code.text = dataCurrency.charCode
+        code.text = codeValue
         exchangeValue.text = dataCurrency.value.toString()
     }
 }
