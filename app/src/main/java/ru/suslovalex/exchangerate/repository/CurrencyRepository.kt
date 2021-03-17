@@ -4,15 +4,25 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.suslovalex.exchangerate.data.DataCurrency
+import ru.suslovalex.exchangerate.data.entity.CurrencyEntity
+import ru.suslovalex.exchangerate.db.CurrencyDatabase
+import ru.suslovalex.exchangerate.model.CurrencyResponse
 import ru.suslovalex.exchangerate.retrofit.RemoteDataStore
 
-class CurrencyRepository(private val remoteDataStore: RemoteDataStore) {
+class CurrencyRepository(
+    private val remoteDataStore: RemoteDataStore,
+    private val currencyDatabase: CurrencyDatabase
+) {
+
+    private val currencyDao = currencyDatabase.currencyDao
 
 
-    suspend fun getData(): List<DataCurrency> = withContext(Dispatchers.IO){
+    lateinit var date: String
+
+    suspend fun getData(): List<DataCurrency> = withContext(Dispatchers.IO) {
 
         val data = remoteDataStore.getData()
-        val date = data.timestamp
+        date = convertDate(data)
 
         Log.d("DATA", date)
 
@@ -52,6 +62,37 @@ class CurrencyRepository(private val remoteDataStore: RemoteDataStore) {
 
         return@withContext dataCurrencyList
 
+    }
+
+    private fun convertDate(data: CurrencyResponse): String {
+        return data.date.split(":")[0].dropLast(3)
+    }
+
+    suspend fun saveDataCurrencyToDatabase(listDataCurrency: List<DataCurrency>) =
+        withContext(Dispatchers.IO) {
+
+            val listCurrencyEntity = listDataCurrency.map { dataCurrency ->
+                CurrencyEntity(
+                    id = dataCurrency.iD,
+                    numCode = dataCurrency.numCode,
+                    charCode = dataCurrency.charCode,
+                    nominal = dataCurrency.nominal,
+                    name = dataCurrency.name,
+                    value = dataCurrency.value,
+                    previous = dataCurrency.previous,
+                    date = date
+                )
+            }
+            currencyDao.insertCurrencies(listCurrencyEntity)
+
+        }
+
+    suspend fun removeDatabase() = withContext(Dispatchers.IO){
+        return@withContext currencyDao.deleteTableCurrencies()
+    }
+
+    suspend fun readDataFromDatabase(): List<CurrencyEntity> = withContext(Dispatchers.IO){
+        currencyDao.getCurrencies()
     }
 
 

@@ -3,6 +3,7 @@ package ru.suslovalex.exchangerate.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,6 +26,10 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        currencyListViewModel.date.observe(viewLifecycleOwner, Observer { date ->
+            setupDate(view, date)
+        })
+
         currencyListViewModel.currencyListState.observe(viewLifecycleOwner, Observer { state ->
 
             when (state){
@@ -41,6 +46,12 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
             }
 
         })
+    }
+
+    private fun setupDate(view: View, dateString: String?) {
+        val date: TextView = view.findViewById(R.id.date)
+        date.text = dateString
+
     }
 
     private fun showProgressBar(view: View) {
