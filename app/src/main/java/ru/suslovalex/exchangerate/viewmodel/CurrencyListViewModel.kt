@@ -1,6 +1,5 @@
 package ru.suslovalex.exchangerate.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,7 @@ import ru.suslovalex.exchangerate.repository.CurrencyRepository
 import ru.suslovalex.exchangerate.data.DataChecker
 import ru.suslovalex.exchangerate.data.DataCurrency
 import ru.suslovalex.exchangerate.data.DataResponseResult
+import ru.suslovalex.exchangerate.data.entity.CurrencyEntity
 
 class CurrencyListViewModel(private val currencyRepository: CurrencyRepository, private val checker: DataChecker) : ViewModel() {
 
@@ -22,30 +22,61 @@ class CurrencyListViewModel(private val currencyRepository: CurrencyRepository, 
     get() = _date
 
     init {
-        loadData()
+        readDataFromDatabase()
+//        loadDataFromInternet()
     }
 
-    private fun loadData() = viewModelScope.launch {
-        Log.d("MyViewModel", "init viewmodel")
-
+    private fun loadDataFromInternet() = viewModelScope.launch {
         _currencyListState.postValue(CurrencyListState.Loading)
         val listDataCurrency = currencyRepository.getData()
         val newState = when (checker.loadData(listDataCurrency)){
             DataResponseResult.Error -> CurrencyListState.Error("Error!")
             DataResponseResult.Success -> {
+                saveDatabase(listDataCurrency)
                 _date.postValue(currencyRepository.date)
                 CurrencyListState.Success(listDataCurrency)
             }
         }
         _currencyListState.postValue(newState)
     }
+
+    private fun saveDatabase(listDataCurrency: List<DataCurrency>) = viewModelScope.launch {
+        currencyRepository.saveDataCurrencyToDatabase(listDataCurrency)
+    }
+
+    private fun readDataFromDatabase() = viewModelScope.launch {
+        _currencyListState.postValue(CurrencyListState.Loading)
+        val listCurrencyEntity = currencyRepository.readDataFromDatabase()
+        if (listCurrencyEntity.isEmpty()){
+            loadDataFromInternet()
+        }
+        else{
+            val listDataCurrency = convertToDataCurrency(listCurrencyEntity)
+            _currencyListState.postValue(CurrencyListState.Success(listDataCurrency))
+            _date.postValue(listCurrencyEntity[0].date)
+        }
+
+
+    }
+
+    private fun convertToDataCurrency(listCurrencyEntity: List<CurrencyEntity>): List<DataCurrency> {
+
+       return listCurrencyEntity.map { entity ->
+            DataCurrency(
+                iD = entity.id,
+                numCode = entity.numCode,
+                charCode = entity.charCode,
+                nominal = entity.nominal,
+                name = entity.name,
+                value = entity.value,
+                previous = entity.previous
+            )
+        }
+    }
 }
 
 sealed class CurrencyListState {
-
     data class Success(val currencyList: List<DataCurrency>) : CurrencyListState()
     data class Error(val errorMessage: String) : CurrencyListState()
     object Loading : CurrencyListState()
-
-
 }
