@@ -17,6 +17,10 @@ class CurrencyListViewModel(private val currencyRepository: CurrencyRepository, 
     val currencyListState: LiveData<CurrencyListState>
         get() = _currencyListState
 
+    private val _date = MutableLiveData<String>()
+    val date: LiveData<String>
+    get() = _date
+
     init {
         loadData()
     }
@@ -28,7 +32,10 @@ class CurrencyListViewModel(private val currencyRepository: CurrencyRepository, 
         val listDataCurrency = currencyRepository.getData()
         val newState = when (checker.loadData(listDataCurrency)){
             DataResponseResult.Error -> CurrencyListState.Error("Error!")
-            DataResponseResult.Success -> CurrencyListState.Success(listDataCurrency)
+            DataResponseResult.Success -> {
+                _date.postValue(currencyRepository.date)
+                CurrencyListState.Success(listDataCurrency)
+            }
         }
         _currencyListState.postValue(newState)
     }

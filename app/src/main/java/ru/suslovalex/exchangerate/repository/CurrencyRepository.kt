@@ -4,15 +4,18 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.suslovalex.exchangerate.data.DataCurrency
+import ru.suslovalex.exchangerate.model.CurrencyResponse
 import ru.suslovalex.exchangerate.retrofit.RemoteDataStore
 
 class CurrencyRepository(private val remoteDataStore: RemoteDataStore) {
 
 
-    suspend fun getData(): List<DataCurrency> = withContext(Dispatchers.IO){
+    lateinit var date: String
+
+    suspend fun getData(): List<DataCurrency> = withContext(Dispatchers.IO) {
 
         val data = remoteDataStore.getData()
-        val date = data.timestamp
+        date = convertDate(data)
 
         Log.d("DATA", date)
 
@@ -52,6 +55,10 @@ class CurrencyRepository(private val remoteDataStore: RemoteDataStore) {
 
         return@withContext dataCurrencyList
 
+    }
+
+    private fun convertDate(data: CurrencyResponse): String {
+        return data.date.split(":")[0].dropLast(3)
     }
 
 
