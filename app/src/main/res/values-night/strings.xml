@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="converter">Конвертер валют</string>
+    <string name="rur">RUR</string>
+</resources>

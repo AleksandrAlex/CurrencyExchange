@@ -26,21 +26,9 @@ class CurrencyListViewModel(
     val date: LiveData<String>
         get() = _date
 
-    private val _internetConnection = MutableLiveData<Boolean>()
-    val internetConnection: LiveData<Boolean>
-    get() = _internetConnection
-
     init {
         readDataFromDatabase()
 //        loadDataFromInternet()
-    }
-
-    fun hasInternetConnection() {
-        _internetConnection.postValue(true)
-    }
-
-    fun noInternetConnection() {
-        _internetConnection.postValue(false)
     }
 
     fun loadDataFromInternet() = viewModelScope.launch {
@@ -71,8 +59,6 @@ class CurrencyListViewModel(
             _currencyListState.postValue(CurrencyListState.Success(listDataCurrency))
             _date.postValue(listCurrencyEntity[0].date)
         }
-
-
     }
 
     private fun convertToDataCurrency(listCurrencyEntity: List<CurrencyEntity>): List<DataCurrency> {

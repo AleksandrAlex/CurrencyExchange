@@ -1,8 +1,5 @@
 package ru.suslovalex.exchangerate.ui
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -62,7 +59,6 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
                 showError(NO_INTERNET_CONNECTION)
                 swipeRefreshLayout.isRefreshing = false
             }
-            currencyListViewModel
         }
 
     }
@@ -89,9 +85,19 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
 
     private fun setupUI(view: View, dataCurrencies: List<DataCurrency>) {
         val currencyList: RecyclerView = view.findViewById(R.id.currency_list)
-        currencyAdapter = CurrencyAdapter()
+        currencyAdapter = CurrencyAdapter{dataCurrency -> onClickItem(dataCurrency) }
         currencyList.layoutManager = LinearLayoutManager(context)
         currencyList.adapter = currencyAdapter
         currencyAdapter.submitList(dataCurrencies)
+    }
+
+    private fun onClickItem(dataCurrency: DataCurrency) {
+        activity?.let {
+            it.supportFragmentManager.beginTransaction()
+//                .addSharedElement(view, getString(androidx.work.R.string.transition))
+                .replace(R.id.container_layout, CurrencyConverterFragment.newInstance(dataCurrency))
+                .addToBackStack(null)
+                .commit()
+        }
     }
 }

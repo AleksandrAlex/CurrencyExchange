@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Exchange Rate</string>
+    <string name="converter">Конвертертировать рубль в</string>
+    <string name="rur">RUR</string>
 </resources>
