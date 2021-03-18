@@ -28,7 +28,6 @@ class CurrencyListViewModel(
 
     init {
         readDataFromDatabase()
-//        loadDataFromInternet()
     }
 
     fun loadDataFromInternet() = viewModelScope.launch {

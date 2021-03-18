@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
+    
     <TextView
         android:id="@+id/txt_title_converter"
         android:layout_width="0dp"
@@ -23,57 +22,62 @@
 
 <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/input_layout_RUR"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toBottomOf="@+id/txt_title_converter"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toStartOf="@id/image_equal"
     android:layout_marginTop="30dp"
+    android:layout_marginStart="8dp"
     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
     <EditText
         android:id="@+id/editTextRUR"
-        android:layout_width="120dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:textSize="18sp"
         android:ems="10"
         android:inputType="number"
         android:hint="@string/rur"
         tools:ignore="Autofill" />
 </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/image_equal"
-        android:layout_width="40dp"
+        android:layout_width="60dp"
         android:layout_height="60dp"
-        app:srcCompat="@drawable/ic_equal"
-        tools:layout_editor_absoluteX="164dp"
-        tools:layout_editor_absoluteY="118dp"
+        app:srcCompat="@drawable/ic_arrow"
         app:layout_constraintBottom_toBottomOf="@+id/input_layout_RUR"
         app:layout_constraintStart_toEndOf="@+id/input_layout_RUR"
-        app:layout_constraintEnd_toStartOf="@id/editTextAnotherCurrency"
-        android:layout_marginStart="20dp" />
+        app:layout_constraintEnd_toStartOf="@id/anotherCurrency"
+        android:layout_marginStart="20dp"
+        tools:ignore="ContentDescription" />
 
 
 
     <TextView
-        android:id="@+id/editTextAnotherCurrency"
-        android:layout_width="120dp"
+        android:id="@+id/anotherCurrency"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:ems="10"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:lines="1"
         app:layout_constraintStart_toEndOf="@id/image_equal"
         android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="@id/input_layout_RUR"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/box_for_textview"/>
+        android:textColor="@color/black"
+        android:background="@drawable/box_for_textview"
+        android:layout_marginEnd="8dp"/>
 
     <TextView
         android:id="@+id/code_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAnotherCurrency"
-        app:layout_constraintEnd_toEndOf="@id/editTextAnotherCurrency"
+        app:layout_constraintTop_toBottomOf="@+id/anotherCurrency"
+        app:layout_constraintEnd_toEndOf="@id/anotherCurrency"
         tools:text="AUD"
-        android:textSize="20dp"/>
+        android:textSize="20sp"/>
 
 
 

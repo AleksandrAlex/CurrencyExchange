@@ -15,6 +15,7 @@ import ru.suslovalex.exchangerate.data.DataChecker
 import ru.suslovalex.exchangerate.db.CurrencyDatabase
 import ru.suslovalex.exchangerate.repository.CurrencyRepository
 import ru.suslovalex.exchangerate.retrofit.RemoteDataStore
+import ru.suslovalex.exchangerate.viewmodel.CurrencyConverterViewModel
 import ru.suslovalex.exchangerate.viewmodel.CurrencyListViewModel
 import ru.suslovalex.exchangerate.worker.CurrencyWorker
 import java.util.concurrent.TimeUnit
@@ -33,6 +34,10 @@ class App: Application() {
             viewModel { CurrencyListViewModel(get(), get()) }
         }
 
+        val currencyConverterViewModel = module {
+            viewModel { CurrencyConverterViewModel() }
+        }
+
         val appModule = module {
             single { RemoteDataStore() }
             single { CurrencyDatabase(get()) }
@@ -42,7 +47,7 @@ class App: Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(currencyListViewModelModule, appModule)
+            modules(currencyListViewModelModule, currencyConverterViewModel, appModule)
 
         }
     }
