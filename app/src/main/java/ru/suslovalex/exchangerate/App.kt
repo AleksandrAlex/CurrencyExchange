@@ -56,6 +56,7 @@ class App: Application() {
     private fun periodicWork() {
         val constraint = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresCharging(true)
             .build()
 
         val periodicWorkRequest =
