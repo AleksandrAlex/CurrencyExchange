@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        backAnimationFromConverter(view)
         initRefresh(view)
 
         currencyListViewModel.date.observe(viewLifecycleOwner, Observer { date ->
@@ -49,6 +51,11 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
         })
     }
 
+    private fun backAnimationFromConverter(view: View) {
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+    }
+
     private fun initRefresh(view: View) {
         val swipeRefreshLayout: SwipeRefreshLayout = view.findViewById(R.id.refresh)
         swipeRefreshLayout.setOnRefreshListener {
@@ -60,7 +67,6 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
                 swipeRefreshLayout.isRefreshing = false
             }
         }
-
     }
 
     private fun setupDate(view: View, dateString: String?) {
@@ -85,16 +91,16 @@ class CurrencyListFragment : Fragment(R.layout.fragment_currency_list) {
 
     private fun setupUI(view: View, dataCurrencies: List<DataCurrency>) {
         val currencyList: RecyclerView = view.findViewById(R.id.currency_list)
-        currencyAdapter = CurrencyAdapter{dataCurrency -> onClickItem(dataCurrency) }
+        currencyAdapter = CurrencyAdapter{dataCurrency, view -> onClickItem(dataCurrency, view) }
         currencyList.layoutManager = LinearLayoutManager(context)
         currencyList.adapter = currencyAdapter
         currencyAdapter.submitList(dataCurrencies)
     }
 
-    private fun onClickItem(dataCurrency: DataCurrency) {
+    private fun onClickItem(dataCurrency: DataCurrency, view: View) {
         activity?.let {
             it.supportFragmentManager.beginTransaction()
-//                .addSharedElement(view, getString(androidx.work.R.string.transition))
+                .addSharedElement(view, getString(R.string.transition))
                 .replace(R.id.container_layout, CurrencyConverterFragment.newInstance(dataCurrency))
                 .addToBackStack(null)
                 .commit()

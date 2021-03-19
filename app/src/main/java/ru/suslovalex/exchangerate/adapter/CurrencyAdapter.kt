@@ -3,6 +3,7 @@ package ru.suslovalex.exchangerate.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.suslovalex.exchangerate.R
 import ru.suslovalex.exchangerate.data.DataCurrency
 
-class CurrencyAdapter(private val adapterOnClick: (DataCurrency) -> Unit): ListAdapter<DataCurrency, CurrencyViewHolder>(CurrencyDiffUtil()) {
+class CurrencyAdapter(private val adapterOnClick: (DataCurrency, View) -> Unit): ListAdapter<DataCurrency, CurrencyViewHolder>(CurrencyDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_currency, parent, false)
         return CurrencyViewHolder(view)
@@ -18,8 +19,10 @@ class CurrencyAdapter(private val adapterOnClick: (DataCurrency) -> Unit): ListA
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.item_animation)
+        holder.itemView.animation.duration = 500
         holder.itemView.setOnClickListener {
-            adapterOnClick(getItem(position))
+            adapterOnClick(getItem(position), it)
         }
     }
 }
@@ -30,6 +33,7 @@ class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val exchangeValue: TextView = itemView.findViewById(R.id.value)
 
     fun bind(dataCurrency: DataCurrency){
+        itemView.transitionName = itemView.context.getString(R.string.transition)+position
         val codeValue = "${dataCurrency.nominal} ${dataCurrency.charCode}"
         name.text = dataCurrency.name
         code.text = codeValue
