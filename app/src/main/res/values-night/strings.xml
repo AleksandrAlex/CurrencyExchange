@@ -2,4 +2,5 @@
 <resources>
     <string name="converter">Конвертер валют</string>
     <string name="rur">RUR</string>
+    <string name="transition">transition</string>
 </resources>

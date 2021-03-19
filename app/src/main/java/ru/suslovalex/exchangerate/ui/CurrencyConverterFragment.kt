@@ -1,5 +1,6 @@
 package ru.suslovalex.exchangerate.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.google.android.material.transition.MaterialContainerTransform
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.suslovalex.exchangerate.R
 import ru.suslovalex.exchangerate.data.DataCurrency
@@ -15,15 +17,17 @@ import ru.suslovalex.exchangerate.viewmodel.CurrencyConverterViewModel
 private const val UNKNOWN_PROPERTY = "Unknown"
 private const val UNKNOWN_DOUBLE_VALUE = 0.0
 private const val UNKNOWN_INT_VALUE = 0
+private const val DURATION = 1000L
 
 class CurrencyConverterFragment : Fragment(R.layout.fragment_convert_currency) {
 
     private lateinit var args: DataCurrency
     private val currencyConverterViewModel: CurrencyConverterViewModel by viewModel()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        doAnimation()
 
         args = getCurrency()
         initFields(view)
@@ -33,17 +37,21 @@ class CurrencyConverterFragment : Fragment(R.layout.fragment_convert_currency) {
         })
 
         val rub: EditText = view.findViewById(R.id.editTextRUR)
-
         val equal: ImageView = view.findViewById(R.id.image_equal)
         equal.setOnClickListener {
             val rubString: String = rub.text.toString()
-//            if (rubString.isEmpty()){
-//                currencyConverterViewModel.getValues(args, "1")
-//            }
             currencyConverterViewModel.getValues(args, rubString)
             }
         }
 
+    private fun doAnimation() {
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.container_layout
+            duration = DURATION
+            scrimColor = Color.WHITE
+            setAllContainerColors(Color.WHITE)
+        }
+    }
 
 
     private fun setupResult(view: View, value: String) {
@@ -72,7 +80,6 @@ class CurrencyConverterFragment : Fragment(R.layout.fragment_convert_currency) {
             UNKNOWN_DOUBLE_VALUE
         )
     }
-
 
     companion object {
         fun newInstance(dataCurrency: DataCurrency): CurrencyConverterFragment {
