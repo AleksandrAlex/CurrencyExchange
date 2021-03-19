@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.suslovalex.exchangerate.data.DataCurrency
+import java.lang.Exception
 
 class CurrencyConverterViewModel : ViewModel() {
 
@@ -22,11 +23,18 @@ class CurrencyConverterViewModel : ViewModel() {
             if (rubString.isEmpty()) {
                 return@launch
             }
-            val rub = rubString.toInt()
-            val value = dataCurrency.value
-            val nominal = dataCurrency.nominal
+            try {
+                val rub = rubString.toLong()
+                val value = dataCurrency.value
+                val nominal = dataCurrency.nominal
 
-            val result = rub * nominal / value
-            _convertCurrency.postValue(result.toString())
+                val result = rub * nominal / value
+                val resultString = String.format("%.3f", result)
+                _convertCurrency.postValue(resultString)
+            }catch (e: Exception){
+                return@launch
+            }
+
+
         }
 }
