@@ -17,7 +17,7 @@ import ru.suslovalex.exchangerate.viewmodel.CurrencyConverterViewModel
 private const val UNKNOWN_PROPERTY = "Unknown"
 private const val UNKNOWN_DOUBLE_VALUE = 0.0
 private const val UNKNOWN_INT_VALUE = 0
-private const val DURATION = 1000L
+private const val DURATION = 700L
 
 class CurrencyConverterFragment : Fragment(R.layout.fragment_convert_currency) {
 
