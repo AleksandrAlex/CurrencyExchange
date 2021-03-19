@@ -1,7 +1,9 @@
 package ru.suslovalex.exchangerate.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class DataCurrency(
         val iD: String,
         val numCode: String,
@@ -10,4 +12,4 @@ data class DataCurrency(
         val name: String,
         val value: Double,
         val previous: Double
-)
+): Parcelable

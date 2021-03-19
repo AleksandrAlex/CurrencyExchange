@@ -9,7 +9,7 @@ import ru.suslovalex.exchangerate.data.entity.CurrencyEntity
 
 @Dao
 interface CurrencyDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCurrencies(currencies: List<CurrencyEntity>)
 
     @Query("SELECT * FROM table_currencies")

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.suslovalex.exchangerate.R
 import ru.suslovalex.exchangerate.data.DataCurrency
 
-class CurrencyAdapter: ListAdapter<DataCurrency, CurrencyViewHolder>(CurrencyDiffUtil()) {
+class CurrencyAdapter(private val adapterOnClick: (DataCurrency) -> Unit): ListAdapter<DataCurrency, CurrencyViewHolder>(CurrencyDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_currency, parent, false)
         return CurrencyViewHolder(view)
@@ -18,8 +18,10 @@ class CurrencyAdapter: ListAdapter<DataCurrency, CurrencyViewHolder>(CurrencyDif
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            adapterOnClick(getItem(position))
+        }
     }
-
 }
 
 class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
